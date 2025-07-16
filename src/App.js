@@ -52,6 +52,10 @@ export default function App() {
     const [user, setUser] = useState(null);
     const [isRegistering, setIsRegistering] = useState(false);
 
+    const [showWhatsappModal, setShowWhatsappModal] = useState(false);
+    const whatsappNumber = "5574999751663";
+    const whatsappMessage = encodeURIComponent("Olá, gostaria de enviar meu orçamento");
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
@@ -103,27 +107,28 @@ export default function App() {
         );
     };
 
-    const generatePDF = () => {
-        const doc = new jsPDF();
-        doc.text("Orçamento", 10, 10);
-        let y = 20;
-        cart.forEach((item) => {
-            doc.text(
-                `${item.name} - ${item.quantity} x R$${item.price.toFixed(
-                    2
-                )} = R$${(item.quantity * item.price).toFixed(2)}`,
-                10,
-                y
-            );
-            y += 10;
-        });
-        const total = cart.reduce(
-            (sum, item) => sum + item.quantity * item.price,
-            0
+const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.text("Orçamento", 10, 10);
+    doc.text(`Email: ${user.email}`, 10, 20); // Adiciona o email do usuário
+    let y = 30;
+    cart.forEach((item) => {
+        doc.text(
+            `${item.name} - ${item.quantity} x R$${item.price.toFixed(2)} = R$${(item.quantity * item.price).toFixed(2)}`,
+            10,
+            y
         );
-        doc.text(`Total: R$${total.toFixed(2)}`, 10, y);
-        doc.save("orcamento.pdf");
-    };
+        y += 10;
+    });
+    const total = cart.reduce(
+        (sum, item) => sum + item.quantity * item.price,
+        0
+    );
+    doc.text(`Total: R$${total.toFixed(2)}`, 10, y);
+    doc.save("orcamento.pdf");
+    setShowWhatsappModal(true); // Abre modal após gerar PDF
+};
+
 
     if (!user) {
         return (
@@ -437,14 +442,148 @@ export default function App() {
                     </ul>
                 )}
 
-                {cart.length > 0 && (
-                    <button
-                        onClick={generatePDF}
-                        className="mt-6 flex items-center gap-2 bg-green-400 text-black px-4 py-2 rounded font-bold"
-                    >
-                        <FaFilePdf /> Baixar Orçamento em PDF
-                    </button>
-                )}
+{cart.length > 0 && (
+    <div className="flex flex-col sm:flex-row gap-4 mt-6">
+        <button
+            onClick={generatePDF}
+            style={{
+                width: "100%",
+                maxWidth: "200px",
+                backgroundColor: "#22c55e", // verde
+                color: "black",
+                padding: "10px 16px",
+                fontWeight: "700",
+                borderRadius: "8px",
+                fontSize: "1rem",
+                cursor: "pointer",
+                border: "none",
+                boxShadow: "0 4px 6px rgba(34, 197, 94, 0.4)",
+                transition: "background-color 0.3s ease",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#16a34a")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#22c55e")}
+        >
+            <FaFilePdf /> Baixar Orçamento em PDF
+        </button>
+
+        <a
+            href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+                width: "100%",
+                maxWidth: "200px",
+                backgroundColor: "#22c55e", // verde
+                color: "black",
+                padding: "10px 16px",
+                fontWeight: "700",
+                borderRadius: "8px",
+                fontSize: "1rem",
+                cursor: "pointer",
+                border: "none",
+                boxShadow: "0 4px 6px rgba(34, 197, 94, 0.4)",
+                transition: "background-color 0.3s ease",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                textDecoration: "none",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#16a34a")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#22c55e")}
+        >
+            <FaWhatsapp /> Enviar orçamento via WhatsApp
+        </a>
+    </div>
+)}
+
+{showWhatsappModal && (
+    <div
+        style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+        }}
+    >
+        <div
+            style={{
+                background: "white",
+                padding: "30px",
+                borderRadius: "12px",
+                textAlign: "center",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                maxWidth: "90vw",
+                width: "400px",
+            }}
+        >
+            <h2 style={{ fontSize: "1.25rem", fontWeight: "700", marginBottom: "24px" }}>
+                PDF gerado com sucesso!
+            </h2>
+
+            <a
+                href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                    backgroundColor: "#22c55e",
+                    color: "black",
+                    padding: "10px 20px",
+                    fontWeight: "700",
+                    borderRadius: "8px",
+                    fontSize: "1rem",
+                    cursor: "pointer",
+                    border: "none",
+                    boxShadow: "0 4px 6px rgba(34, 197, 94, 0.4)",
+                    transition: "background-color 0.3s ease",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "8px",
+                    textDecoration: "none",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#16a34a")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#22c55e")}
+            >
+                <FaWhatsapp /> Enviar PDF ao WhatsApp
+            </a>
+
+            <div style={{ marginTop: "20px" }}>
+                <button
+                    onClick={() => setShowWhatsappModal(false)}
+                    style={{
+                        backgroundColor: "black",
+                        color: "white",
+                        padding: "8px 16px",
+                        fontWeight: "700",
+                        borderRadius: "8px",
+                        fontSize: "0.9rem",
+                        cursor: "pointer",
+                        border: "none",
+                        boxShadow: "0 4px 6px rgba(0,0,0,0.6)",
+                        transition: "background-color 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#222")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "black")}
+                >
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+)}
+
+
             </div>
         </div>
     );
