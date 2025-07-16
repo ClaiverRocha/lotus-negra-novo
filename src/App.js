@@ -30,7 +30,7 @@ const loadImage = (index) => {
 const products = Array.from({ length: 12 }, (_, i) => {
     const index = i + 1;
     const image = loadImage(index);
-    const nomesOficiais = ["Fake Queen", "Bunny Killer", "Lotus Negra"];
+    const nomesOficiais = ["Fake Queen", "Bunny Killer", "Lotus Negra", "Fall King"];
 
     const isPlaceholder = typeof image === "string" && image.includes("placeholder");
 
