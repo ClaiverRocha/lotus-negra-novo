@@ -16,8 +16,6 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -46,21 +44,20 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
-    "gh-pages": "^6.3.0",
     "postcss": "^8.5.5",
     "tailwindcss": "^4.1.11"
   },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "Projeto da loja Lotus Negra feito com React.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ClaiverRocha/LotusNegra.git"
+    "url": "git+https://github.com/ClaiverRocha/lotus-negra-novo.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Claiver Rocha",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ClaiverRocha/LotusNegra/issues"
-  },
-  "homepage": "https://github.com/ClaiverRocha/LotusNegra"
+    "url": "https://github.com/ClaiverRocha/lotus-negra-novo/issues"
+  }
+
 }
