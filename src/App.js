@@ -37,7 +37,7 @@ const products = Array.from({ length: 12 }, (_, i) => {
     return {
         id: index,
         name: isPlaceholder ? "Produto em breve" : nomesOficiais[i] || `Camisa ${index}`,
-        price: isPlaceholder ? 0 : 99.99,
+        price: isPlaceholder ? 0 : 100.00,
         image,
         available: !isPlaceholder,
     };
