@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* Fonte especial para títulos */
+.font-lobster {
+    font-family: 'Lobster Two', cursive;
+}
+
+/* Reset básico e corpo */
+body {
+    margin: 0;
+    font-family: 'Urbanist', sans-serif;
+    background-color: #0d0d0d;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* Títulos com fonte Urbanist e negrito */
+h1, h2, h3, h4, h5 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 700;
+}
+
+/* Inputs e botões com fonte Urbanist */
+input, button {
+    font-family: 'Urbanist', sans-serif;
+}
+
+/* Link do login/cadastro */
+button.text-purple-400:hover {
+    cursor: pointer;
+}
+
+/* Remove outline padrão para foco e adiciona anel personalizado */
+input:focus, button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 230, 50, 0.534); /* roxo claro */
+    border-color: #8b5cf6;
+}
+
+/* Para o container principal da tela de login dividido */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Para telas médias para cima, lado a lado */
+@media (min-width: 768px) {
+    .login-container {
+        flex-direction: row;
+    }
+}
+
+/* Estilizando o lado esquerdo */
+.login-left {
+    flex: 1;
+    background-color: #4c1d95; /* um roxo mais vibrante */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+/* Título lado esquerdo */
+.login-left h1 {
+    font-family: 'Lobster Two', cursive;
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.25em;
+}
+
+/* Texto lado esquerdo */
+.login-left p {
+    font-size: 1.25rem;
+    max-width: 360px;
+    margin-bottom: 2rem;
+    color: #d1d5db; /* cinza claro */
+}
+
+/* Ícones sociais lado esquerdo */
+.login-left .social-icons a {
+    background: white;
+    color: #4c1d95;
+    border-radius: 9999px;
+    padding: 0.75rem;
+    margin: 0 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-left .social-icons a:hover {
+    background-color: #7c3aed;
+    color: white;
+}
+
+/* Estilizando o lado direito */
+.login-right {
+    flex: 1;
+    background-color: #121212;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+}
+
+/* Título lado direito */
+.login-right h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Texto lado direito */
+.login-right p {
+    color: #9ca3af; /* cinza médio */
+    margin-bottom: 2rem;
+    max-width: 320px;
+    text-align: center;
+}
+
+/* Inputs */
+.login-right input {
+    width: 100%;
+    max-width: 320px;
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s;
+}
+
+.login-right input::placeholder {
+    color: #6b7280;
+}
+
+/* Botão entrar/cadastrar */
+.login-right button {
+    width: 100%;
+    max-width: 320px;
+    background-color: #7c3aed;
+    color: white;
+    padding: 0.75rem;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s;
+}
+
+.login-right button:hover {
+    background-color: #5b21b6;
+}
+
+/* Link alternar login/cadastro */
+.login-right .toggle-button {
+    margin-top: 1rem;
+    color: #a78bfa;
+    cursor: pointer;
+    font-size: 0.875rem;
+    background: none;
+    border: none;
+    text-decoration: underline;
+}
+
+/* Responsividade: centraliza texto no mobile */
+@media (max-width: 767px) {
+    .login-left, .login-right {
+        text-align: center;
+        padding: 2rem 1.5rem;
+    }
+
+    .login-left h1 {
+        font-size: 2.5rem;
+        letter-spacing: 0.15em;
+    }
+}
