@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import jsPDF from "jspdf";
 import { auth } from "./firebase";
 import {
@@ -30,7 +30,7 @@ const loadImage = (index) => {
 const products = Array.from({ length: 12 }, (_, i) => {
     const index = i + 1;
     const image = loadImage(index);
-    const nomesOficiais = ["Fake Queen", "Bunny Killer", "Lotus Negra", "Fall King"];
+    const nomesOficiais = ["Fake Queen", "Bunny Killer", "Lotus Negra", "Fall King", "Lord", "Black", "Beserk", "Broken"];
 
     const isPlaceholder = typeof image === "string" && image.includes("placeholder");
 
@@ -43,18 +43,19 @@ const products = Array.from({ length: 12 }, (_, i) => {
     };
 });
 
-
 export default function App() {
     const [cart, setCart] = useState([]);
-    const [quantities, setQuantities] = useState({});
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [user, setUser] = useState(null);
     const [isRegistering, setIsRegistering] = useState(false);
-
     const [showWhatsappModal, setShowWhatsappModal] = useState(false);
+
     const whatsappNumber = "5574999751663";
     const whatsappMessage = encodeURIComponent("Olá, gostaria de enviar meu orçamento");
+
+    // Ref para armazenar inputs de quantidade
+    const quantityRefs = useRef({});
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -77,22 +78,27 @@ export default function App() {
 
     const handleLogout = () => signOut(auth);
 
-    const addToCart = (product) => {
-        const quantity = Math.max(1, parseInt(quantities[product.id]) || 1);
+    const addToCart = (product, quantity) => {
+  const qty = Math.max(1, parseInt(quantity) || 1);
 
-        setCart((prev) => {
-            const existingIndex = prev.findIndex((item) => item.id === product.id);
-            if (existingIndex >= 0) {
-                const updated = [...prev];
-                updated[existingIndex].quantity += quantity;
-                return updated;
-            } else {
-                return [...prev, { ...product, quantity }];
-            }
-        });
+  setCart((prev) => {
+    const existingIndex = prev.findIndex((item) => item.id === product.id);
+    if (existingIndex >= 0) {
+      const updated = [...prev];
+      updated[existingIndex] = {
+        ...updated[existingIndex],
+        quantity: updated[existingIndex].quantity + qty,
+      };
+      return updated;
+    } else {
+      return [...prev, { ...product, quantity: qty }];
+    }
+  });
 
-        setQuantities((prev) => ({ ...prev, [product.id]: 1 }));
-    };
+  const inputEl = quantityRefs.current[product.id];
+  if (inputEl) inputEl.value = 1;
+};
+
 
     const removeFromCart = (productId) => {
         setCart((prev) => prev.filter((item) => item.id !== productId));
@@ -107,42 +113,41 @@ export default function App() {
         );
     };
 
-const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.text("Orçamento", 10, 10);
-    doc.text(`Email: ${user.email}`, 10, 20); // Adiciona o email do usuário
-    let y = 30;
-    cart.forEach((item) => {
-        doc.text(
-            `${item.name} - ${item.quantity} x R$${item.price.toFixed(2)} = R$${(item.quantity * item.price).toFixed(2)}`,
-            10,
-            y
+    const generatePDF = () => {
+        const doc = new jsPDF();
+        doc.text("Orçamento", 10, 10);
+        doc.text(`Email: ${user.email}`, 10, 20);
+        let y = 30;
+        cart.forEach((item) => {
+            doc.text(
+                `${item.name} - ${item.quantity} x R$${item.price.toFixed(2)} = R$${(item.quantity * item.price).toFixed(2)}`,
+                10,
+                y
+            );
+            y += 10;
+        });
+        const total = cart.reduce(
+            (sum, item) => sum + item.quantity * item.price,
+            0
         );
-        y += 10;
-    });
-    const total = cart.reduce(
-        (sum, item) => sum + item.quantity * item.price,
-        0
-    );
-    doc.text(`Total: R$${total.toFixed(2)}`, 10, y);
-    doc.save("orcamento.pdf");
-    setShowWhatsappModal(true); // Abre modal após gerar PDF
-};
-
+        doc.text(`Total: R$${total.toFixed(2)}`, 10, y);
+        doc.save("orcamento.pdf");
+        setShowWhatsappModal(true);
+    };
 
     if (!user) {
         return (
             <div className="login-container">
                 {/* Lado esquerdo */}
                 <div className="login-left">
-                    <h1 className="font-lobster">L◉tus Negra</h1>
+                    <h1 className="font-lobster">L◉tus Negra Street</h1>
                     <p>
                         Faça seu orçamento de camisetas oversized personalizadas
                         com estilo e qualidade!
                     </p>
                     <div className="social-icons">
                         <a
-                            href="https://www.instagram.com/l0tusnegra"
+                            href="https://www.instagram.com/lotus_negra_street"
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Instagram"
@@ -254,14 +259,39 @@ const generatePDF = () => {
                 <FaSignOutAlt /> Sair
             </button>
 
-            <header className="text-center mb-10">
-                <h1 className="text-4xl font-extrabold tracking-widest uppercase">
-                    L◉tus Negra
-                </h1>
-                <p className="text-gray-700">
-                    Camisas Oversized personalizadas
-                </p>
-            </header>
+  <header className="text-center mb-10">
+  <h1 className="text-4xl font-extrabold tracking-widest uppercase flex items-center justify-center">
+    L◉tus Negra Street
+    <span
+      className="flex gap-3"
+      style={{ marginLeft: "2rem" }}  // margem maior para afastar os ícones
+    >
+      <a
+        href="https://www.instagram.com/lotus_negra_street"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram"
+        className="text-black hover:text-purple-700 transition"
+        style={{ fontSize: "1.3rem" }}
+      >
+        <FaInstagram />
+      </a>
+      <a
+        href="https://wa.me/5574999751663"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp"
+        className="text-green-600 hover:text-green-800 transition"
+        style={{ fontSize: "1.3rem" }}
+      >
+        <FaWhatsapp />
+      </a>
+    </span>
+  </h1>
+  <p className="text-gray-700">
+    Camisas Oversized personalizadas
+  </p>
+</header>
 
             <h2 className="text-2xl font-bold mb-8">Catálogo</h2>
 
@@ -329,17 +359,8 @@ const generatePDF = () => {
                                 <input
                                     type="number"
                                     min="1"
-                                    value={quantities[product.id] || 1}
-                                    onChange={(e) =>
-                                        setQuantities({
-                                            ...quantities,
-                                            [product.id]:
-                                                Math.max(
-                                                    1,
-                                                    parseInt(e.target.value) || 1
-                                                ),
-                                        })
-                                    }
+                                    defaultValue={1}
+                                    ref={(el) => (quantityRefs.current[product.id] = el)}
                                     style={{
                                         width: "100%",
                                         padding: "6px",
@@ -351,7 +372,11 @@ const generatePDF = () => {
                                     }}
                                 />
                                 <button
-                                    onClick={() => addToCart(product)}
+                                    onClick={() => {
+                                        const inputEl = quantityRefs.current[product.id];
+                                        const quantity = inputEl ? parseInt(inputEl.value) || 1 : 1;
+                                        addToCart(product, quantity);
+                                    }}
                                     style={{
                                         width: "100%",
                                         backgroundColor: "#1E90FF",
@@ -443,62 +468,70 @@ const generatePDF = () => {
                 )}
 
 {cart.length > 0 && (
-    <div className="flex flex-col sm:flex-row gap-4 mt-6">
-        <button
-            onClick={generatePDF}
-            style={{
-                width: "100%",
-                maxWidth: "200px",
-                backgroundColor: "#22c55e", // verde
-                color: "black",
-                padding: "10px 16px",
-                fontWeight: "700",
-                borderRadius: "8px",
-                fontSize: "1rem",
-                cursor: "pointer",
-                border: "none",
-                boxShadow: "0 4px 6px rgba(34, 197, 94, 0.4)",
-                transition: "background-color 0.3s ease",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#16a34a")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#22c55e")}
-        >
-            <FaFilePdf /> Baixar Orçamento em PDF
-        </button>
+  <div
+    style={{
+      display: "flex",
+      gap: "16px",
+      marginTop: "24px",
+      flexWrap: "wrap",
+      justifyContent: "center",
+    }}
+  >
+    <button
+      onClick={generatePDF}
+      style={{
+        flex: "1 1 200px",
+        maxWidth: "200px",
+        backgroundColor: "#22c55e",
+        color: "black",
+        padding: "10px 16px",
+        fontWeight: "700",
+        borderRadius: "8px",
+        fontSize: "1rem",
+        cursor: "pointer",
+        border: "none",
+        boxShadow: "0 4px 6px rgba(34, 197, 94, 0.4)",
+        transition: "background-color 0.3s ease",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "8px",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#16a34a")}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#22c55e")}
+    >
+      <FaFilePdf /> Baixar Orçamento em PDF
+    </button>
 
-        <a
-            href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-                width: "100%",
-                maxWidth: "200px",
-                backgroundColor: "#22c55e", // verde
-                color: "black",
-                padding: "10px 16px",
-                fontWeight: "700",
-                borderRadius: "8px",
-                fontSize: "1rem",
-                cursor: "pointer",
-                border: "none",
-                boxShadow: "0 4px 6px rgba(34, 197, 94, 0.4)",
-                transition: "background-color 0.3s ease",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                textDecoration: "none",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#16a34a")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#22c55e")}
-        >
-            <FaWhatsapp /> Enviar orçamento via WhatsApp
-        </a>
-    </div>
+    <a
+      href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        flex: "1 1 200px",
+        maxWidth: "200px",
+        backgroundColor: "#22c55e",
+        color: "black",
+        padding: "10px 16px",
+        fontWeight: "700",
+        borderRadius: "8px",
+        fontSize: "1rem",
+        cursor: "pointer",
+        border: "none",
+        boxShadow: "0 4px 6px rgba(34, 197, 94, 0.4)",
+        transition: "background-color 0.3s ease",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "8px",
+        textDecoration: "none",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#16a34a")}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#22c55e")}
+    >
+      <FaWhatsapp /> Enviar orçamento via WhatsApp
+    </a>
+  </div>
 )}
 
 {showWhatsappModal && (
