@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import {
     FaUser,
+    FaUserAlt, // <== importar aqui
     FaSignOutAlt,
     FaShoppingCart,
     FaFilePdf,
@@ -18,6 +19,7 @@ import {
     FaWhatsapp,
 } from "react-icons/fa";
 
+import Camisa1 from "./assets/Camisa1.png"
 // Tenta carregar imagens dinamicamente
 const loadImage = (index) => {
   try {
@@ -217,185 +219,346 @@ export default function App() {
     }
 
     return (
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {/* TOPO */}
+      <nav
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "12px 32px",
+          backgroundColor: "white",
+          borderBottom: "1px solid #ddd",
+          fontWeight: "600",
+          fontSize: "1rem",
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
+        }}
+      >
+        {/* Esquerda: OVERSIZED com retângulo */}
         <div
-            style={{
-                backgroundColor: "white",
-                minHeight: "100vh",
-                color: "black",
-                position: "relative",
-            }}
-            className="p-6 max-w-7xl mx-auto"
+          style={{
+            border: "2px solid black",
+            padding: "4px 10px",
+            color: "black",
+            fontWeight: "700",
+            userSelect: "none",
+          }}
         >
-            {/* Botão sair fixado no topo direito */}
+          OVERSIZED
+        </div>
+
+        {/* Centro: Menu */}
+        <div style={{ display: "flex", gap: "24px", cursor: "pointer" }}>
+          {[
+            "Início",
+            "Coleções",
+            "Sobre",
+            "Contato",
+          ].map((item) => (
             <button
-                onClick={handleLogout}
+              key={item}
+              style={{
+                background: "none",
+                border: "none",
+                fontWeight: "600",
+                fontSize: "1rem",
+                cursor: "pointer",
+                color: "black",
+                padding: 0,
+                userSelect: "none",
+                transition: "color 0.2s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#7e22ce")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "black")}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
+        {/* Direita: Ícones */}
+        <div
+          style={{
+            display: "flex",
+            gap: "16px",
+            fontSize: "1.3rem",
+            cursor: "pointer",
+          }}
+        >
+          <FaUser
+            title="Usuário"
+            onClick={() => alert("Usuário clicado")}
+            style={{ userSelect: "none", 
+            backgroundColor: "white",
+            color: "black",
+            }}
+            
+          />
+          <FaShoppingCart
+            title="Carrinho"
+            onClick={() => alert("Carrinho clicado")}
+            style={{ userSelect: "none", 
+            backgroundColor: "white",
+            color: "black",
+            }}
+          />
+        </div>
+      </nav>
+
+      {/* CONTEÚDO PRINCIPAL - Fundo dividido */}
+      <main style={{ flex: 1, display: "flex", minHeight: "calc(100vh - 56px)" }}>
+        {/* Lado esquerdo - fundo preto com textos e fumaça */}
+        <section
+          style={{
+            flex: 1,
+            backgroundColor: "black",
+            color: "white",
+            padding: "64px 48px",
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            overflow: "hidden",
+          }}
+        >
+          {/* Efeito fumaça em background */}
+          <div
+            style={{
+              position: "absolute",
+              top: "-20%",
+              left: "-20%",
+              width: "150%",
+              height: "150%",
+              background:
+                "url('https://i.ibb.co/jv7jMXv/smoke-effect.png') no-repeat center/cover",
+              opacity: 0.15,
+              filter: "blur(30px)",
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          ></div>
+
+          {/* Conteúdo texto por cima da fumaça */}
+          <div style={{ position: "relative", zIndex: 1, maxWidth: "420px" }}>
+            <h2
+              style={{ fontWeight: "900", fontSize: "2.2rem", marginBottom: "1rem" }}
+            >
+              STREETWEAR
+              <br />
+              AUTÊNTICO
+              <br />
+              E ÚNICO
+            </h2>
+            <p style={{ fontSize: "1rem", lineHeight: "1.5", marginBottom: "2rem" }}>
+              Camisas oversized com designs exclusivos criados por nossa equipe. Você
+              merece se destacar com estilo. Você não veste uma roupa, você veste uma
+              atitude.
+            </p>
+            <div style={{ display: "flex", gap: "2rem", marginBottom: "2rem" }}>
+              <button
                 style={{
-                    position: "fixed",
-                    top: "16px",
-                    right: "16px",
-                    backgroundColor: "transparent",
-                    border: "2px solid black",
-                    borderRadius: "6px",
-                    padding: "6px 12px",
-                    fontWeight: "700",
-                    fontSize: "0.85rem",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    color: "black",
-                    zIndex: 1000,
-                    transition: "all 0.3s ease",
+                  backgroundColor: "transparent",
+                  border: "1.8px solid white",
+                  padding: "10px 20px",
+                  color: "white",
+                  fontWeight: "700",
+                  cursor: "pointer",
+                  borderRadius: "6px",
+                  userSelect: "none",
+                  transition: "background-color 0.3s ease",
                 }}
                 onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "black";
-                    e.currentTarget.style.color = "white";
+                  e.currentTarget.style.backgroundColor = "white";
+                  e.currentTarget.style.color = "black";
                 }}
                 onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.color = "black";
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "white";
                 }}
-            >
-                <FaSignOutAlt /> Sair
-            </button>
-
-  <header className="text-center mb-10">
-  <h1 className="text-4xl font-extrabold tracking-widest uppercase flex items-center justify-center">
-    L◉tus Negra Street
-    <span
-      className="flex gap-3"
-      style={{ marginLeft: "2rem" }}  // margem maior para afastar os ícones
-    >
-      <a
-        href="https://www.instagram.com/lotus_negra_street"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Instagram"
-        className="text-black hover:text-purple-700 transition"
-        style={{ fontSize: "1.3rem" }}
-      >
-        <FaInstagram />
-      </a>
-      <a
-        href="https://wa.me/5574999751663"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="WhatsApp"
-        className="text-green-600 hover:text-green-800 transition"
-        style={{ fontSize: "1.3rem" }}
-      >
-        <FaWhatsapp />
-      </a>
-    </span>
-  </h1>
-  <p className="text-gray-700">
-    Camisas Oversized personalizadas
-  </p>
-</header>
-
-            <h2 className="text-2xl font-bold mb-8">Catálogo</h2>
-
-            {/* Linha de produtos */}
-            <div
+              >
+                VER COLEÇÕES
+              </button>
+              <button
                 style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    gap: "20px",
-                    flexWrap: "wrap",
+                  backgroundColor: "transparent",
+                  border: "1.8px solid white",
+                  padding: "10px 20px",
+                  color: "white",
+                  fontWeight: "700",
+                  cursor: "pointer",
+                  borderRadius: "6px",
+                  userSelect: "none",
+                  transition: "background-color 0.3s ease",
                 }}
-            >
-                {products.map((product) => (
-                    <div
-                        key={product.id}
-                        style={{
-                            backgroundColor: "#f3f4f6",
-                            padding: "12px",
-                            borderRadius: "12px",
-                            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                            flex: "1 1 30%",
-                            maxWidth: "300px",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            marginBottom: "20px",
-                        }}
-                    >
-                        <img
-                            src={product.image}
-                            alt={product.name}
-                            style={{
-                                width: "100%",
-                                height: "auto",
-                                maxHeight: "150px",
-                                objectFit: "cover",
-                                borderRadius: "8px",
-                                marginBottom: "12px",
-                            }}
-                        />
-                        <h3
-                            style={{
-                                fontWeight: "600",
-                                fontSize: "1.1rem",
-                                marginBottom: "6px",
-                            }}
-                        >
-                            {product.name}
-                        </h3>
-                        <p
-                            style={{
-                                color: "#16a34a",
-                                fontWeight: "500",
-                                fontSize: "0.9rem",
-                                marginBottom: "8px",
-                            }}
-                        >
-                            {product.available
-                                ? `R$${product.price.toFixed(2)}`
-                                : "Em breve"}
-                        </p>
-
-                        {product.available && (
-                            <>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    defaultValue={1}
-                                    ref={(el) => (quantityRefs.current[product.id] = el)}
-                                    style={{
-                                        width: "100%",
-                                        padding: "6px",
-                                        fontSize: "0.8rem",
-                                        border: "1px solid #d1d5db",
-                                        borderRadius: "6px",
-                                        marginBottom: "8px",
-                                        textAlign: "center",
-                                    }}
-                                />
-                                <button
-                                    onClick={() => {
-                                        const inputEl = quantityRefs.current[product.id];
-                                        const quantity = inputEl ? parseInt(inputEl.value) || 1 : 1;
-                                        addToCart(product, quantity);
-                                    }}
-                                    style={{
-                                        width: "100%",
-                                        backgroundColor: "#1E90FF",
-                                        color: "black",
-                                        padding: "8px",
-                                        fontWeight: "700",
-                                        borderRadius: "8px",
-                                        fontSize: "0.9rem",
-                                        cursor: "pointer",
-                                        border: "none",
-                                    }}
-                                >
-                                    Adicionar
-                                </button>
-                            </>
-                        )}
-                    </div>
-                ))}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "white";
+                  e.currentTarget.style.color = "black";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "white";
+                }}
+              >
+                SOBRE OS DESIGNS
+              </button>
             </div>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                fontWeight: "600",
+                fontSize: "1rem",
+                lineHeight: 1.6,
+              }}
+            >
+              <li>100% Algodão</li>
+              <li>Gola Reforçada</li>
+              <li>Tamanhos M, G, GG</li>
+              <li>Preço Único R$ 100</li>
+            </ul>
+          </div>
+        </section>
+        {/* Lado direito - fundo branco com foto da camisa */}
+        <section
+          style={{
+            flex: 1,
+            backgroundColor: "black",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "48px",
+            position: "relative",
+          }}
+        >
+          <div
+            style={{
+              border: "4px solid black",
+              borderRadius: "40px",
+              padding: "100px",
+              maxWidth: "700px",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+              backgroundImage: "linear-gradient(135deg, #202020ff, #e0e0e0)",
+                
+            }}
+          >
+            <img
+              src={Camisa1}
+              alt="Camisa Oversized Lotus Negra"
+              style={{
+                
+                width: "100%",
+                height: "auto",
+                borderRadius: "8px",
+                display: "block",
+              }}
+            />
+          </div>
+        </section>
+      </main>
+      <h2 className="text-2xl font-bold mb-8">Catálogo</h2>
+
+<div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "20px",
+    flexWrap: "wrap",
+  }}
+>
+  {products.map((product) => (
+    <div
+      key={product.id}
+      style={{
+        backgroundImage: "linear-gradient(135deg, #1d1d1dff, #e5e7eb)",
+        padding: "52px",
+        borderRadius: "12px",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+        flex: "1 1 30%",
+        maxWidth: "300px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginBottom: "20px",
+      }}
+    >
+      <img
+        src={product.image}
+        alt={product.name}
+        style={{
+          width: "100%",
+          height: "auto",
+          maxHeight: "150px",
+          objectFit: "cover",
+          borderRadius: "8px",
+          marginBottom: "12px",
+        }}
+      />
+      <h3
+        style={{
+          fontWeight: "600",
+          fontSize: "1.1rem",
+          marginBottom: "6px",
+        }}
+      >
+        {product.name}
+      </h3>
+      <p
+        style={{
+          color: "#000000ff",
+          fontWeight: "500",
+          fontSize: "0.9rem",
+          marginBottom: "8px",
+        }}
+      >
+        {product.available ? `R$${product.price.toFixed(2)}` : "Em breve"}
+      </p>
+
+      {product.available && (
+        <>
+          <input
+            type="number"
+            min="1"
+            defaultValue={1}
+            ref={(el) => (quantityRefs.current[product.id] = el)}
+            style={{
+              width: "100%",
+              padding: "6px",
+              fontSize: "0.8rem",
+              border: "1px solid #000000ff",
+              borderRadius: "6px",
+              marginBottom: "8px",
+              textAlign: "center",
+            }}
+          />
+          <button
+            onClick={() => {
+              const inputEl = quantityRefs.current[product.id];
+              const quantity = inputEl ? parseInt(inputEl.value) || 1 : 1;
+              addToCart(product, quantity);
+            }}
+            style={{
+              width: "100%",
+              backgroundColor: "#000000ff",
+              color: "white",
+              padding: "8px",
+              fontWeight: "700",
+              borderRadius: "8px",
+              fontSize: "0.9rem",
+              cursor: "pointer",
+              border: "none",
+            }}
+          >
+            Adicionar
+          </button>
+        </>
+      )}
+    </div>
+  ))}
+</div>
+
+    
 
             <div className="mt-10">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
@@ -619,5 +782,7 @@ export default function App() {
 
             </div>
         </div>
+        
     );
+    
 }
