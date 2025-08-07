@@ -9,7 +9,6 @@ import {
 } from "firebase/auth";
 import {
     FaUser,
-    FaUserAlt, // <== importar aqui
     FaSignOutAlt,
     FaShoppingCart,
     FaFilePdf,
@@ -18,6 +17,7 @@ import {
     FaInstagram,
     FaWhatsapp,
 } from "react-icons/fa";
+import backgroundImage from "./assets/background.png";
 
 import Camisa1 from "./assets/Camisa1.png"
 // Tenta carregar imagens dinamicamente
@@ -52,6 +52,8 @@ export default function App() {
     const [user, setUser] = useState(null);
     const [isRegistering, setIsRegistering] = useState(false);
     const [showWhatsappModal, setShowWhatsappModal] = useState(false);
+    const [showCartBox, setShowCartBox] = useState(false); // <-- Adicionado para corrigir erro
+    const [showUserBox, setShowUserBox] = useState(false); // <-- Adicionado para evitar erro semelhante
 
     const whatsappNumber = "5574999751663";
     const whatsappMessage = encodeURIComponent("Olá, gostaria de enviar meu orçamento");
@@ -65,6 +67,13 @@ export default function App() {
         });
         return () => unsubscribe();
     }, []);
+      // Função para rolar suave até a seção com id
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
     const handleAuth = async () => {
         try {
@@ -246,7 +255,7 @@ export default function App() {
             userSelect: "none",
           }}
         >
-          OVERSIZED
+          Lotus Negra Street
         </div>
 
         {/* Centro: Menu */}
@@ -278,33 +287,155 @@ export default function App() {
           ))}
         </div>
 
-        {/* Direita: Ícones */}
+{/* Direita: Ícones */}
+<div style={{ padding: "20px" }}>
+  <div
+    style={{
+      display: "flex",
+      gap: "16px",
+      fontSize: "1.3rem",
+      cursor: "pointer",
+      position: "relative",
+    }}
+  >
+    {/* Ícone de Usuário */}
+    <div style={{ position: "relative" }}>
+      <FaUser
+        title="Usuário"
+        onClick={() => {
+          setShowUserBox(!showUserBox);
+          setShowCartBox(false);
+        }}
+        style={{
+          userSelect: "none",
+          backgroundColor: "white",
+          color: "black",
+        }}
+      />
+{showUserBox && (
+  <div
+    style={{
+      position: "absolute",
+      top: "-20px",
+      right: "130%",
+      backgroundColor: "black",
+      color: "white",
+      border: "1px solid #ccc",
+      borderRadius: "18px",
+      padding: "12px",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+      width: "200px",
+      zIndex: 50,
+    }}
+  >
+    <div
+      style={{
+        textAlign: "right",
+        marginBottom: "-25px",
+      }}
+    >
+      <span
+        onClick={() => setShowUserBox(false)}
+        style={{
+          cursor: "pointer",
+          fontWeight: "bold",
+          color: "white",
+        }}
+      >
+        X
+      </span>
+    </div>
+    <p style={{ margin: 0 }}>E-mail: {user.email}</p>
+
+    {/* Botão sair dentro da caixinha, estilo simples */}
+<button
+  onClick={handleLogout}
+  style={{
+    marginTop: "12px",
+    width: "100%",
+    padding: "6px 12px",
+    borderRadius: "6px",
+    border: "2px solid black",
+    backgroundColor: "black",
+    color: "white",
+    fontWeight: "700",
+    fontSize: "0.85rem",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+    
+  }}
+
+>
+  <FaSignOutAlt /> Sair
+</button>
+
+  </div>
+)}
+
+    </div>
+
+    {/* Ícone de Carrinho */}
+    <FaShoppingCart
+      title="Carrinho"
+      onClick={() => {
+        setShowCartBox(!showCartBox);
+        setShowUserBox(false);
+      }}
+      style={{
+        userSelect: "none",
+        backgroundColor: "white",
+        color: "black",
+      }}
+    />
+
+    {showCartBox && (
+      <div
+        style={{
+          position: "absolute",
+          top: "40px",
+          left: "60px",
+          backgroundColor: "white",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          padding: "12px",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+          width: "250px",
+          zIndex: 10,
+        }}
+      >
         <div
           style={{
-            display: "flex",
-            gap: "16px",
-            fontSize: "1.3rem",
-            cursor: "pointer",
+            textAlign: "right",
+            marginBottom: "8px",
           }}
         >
-          <FaUser
-            title="Usuário"
-            onClick={() => alert("Usuário clicado")}
-            style={{ userSelect: "none", 
-            backgroundColor: "white",
-            color: "black",
+          <span
+            onClick={() => setShowCartBox(false)}
+            style={{
+              cursor: "pointer",
+              fontWeight: "bold",
             }}
-            
-          />
-          <FaShoppingCart
-            title="Carrinho"
-            onClick={() => alert("Carrinho clicado")}
-            style={{ userSelect: "none", 
-            backgroundColor: "white",
-            color: "black",
-            }}
-          />
+          >
+            X
+          </span>
         </div>
+        <p style={{ marginBottom: "8px", fontWeight: "bold" }}>
+          Itens no Carrinho:
+        </p>
+        <ul style={{ paddingLeft: "16px", margin: 0 }}>
+          {cart.map((item, index) => (
+            <li key={index}>
+              {item.name} x {item.quantity}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+</div>
+
       </nav>
 
       {/* CONTEÚDO PRINCIPAL - Fundo dividido */}
@@ -340,91 +471,115 @@ export default function App() {
             }}
           ></div>
 
-          {/* Conteúdo texto por cima da fumaça */}
-          <div style={{ position: "relative", zIndex: 1, maxWidth: "420px" }}>
-            <h2
-              style={{ fontWeight: "900", fontSize: "2.2rem", marginBottom: "1rem" }}
-            >
-              STREETWEAR
-              <br />
-              AUTÊNTICO
-              <br />
-              E ÚNICO
-            </h2>
-            <p style={{ fontSize: "1rem", lineHeight: "1.5", marginBottom: "2rem" }}>
-              Camisas oversized com designs exclusivos criados por nossa equipe. Você
-              merece se destacar com estilo. Você não veste uma roupa, você veste uma
-              atitude.
-            </p>
-            <div style={{ display: "flex", gap: "2rem", marginBottom: "2rem" }}>
-              <button
-                style={{
-                  backgroundColor: "transparent",
-                  border: "1.8px solid white",
-                  padding: "10px 20px",
-                  color: "white",
-                  fontWeight: "700",
-                  cursor: "pointer",
-                  borderRadius: "6px",
-                  userSelect: "none",
-                  transition: "background-color 0.3s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "white";
-                  e.currentTarget.style.color = "black";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "white";
-                }}
-              >
-                VER COLEÇÕES
-              </button>
-              <button
-                style={{
-                  backgroundColor: "transparent",
-                  border: "1.8px solid white",
-                  padding: "10px 20px",
-                  color: "white",
-                  fontWeight: "700",
-                  cursor: "pointer",
-                  borderRadius: "6px",
-                  userSelect: "none",
-                  transition: "background-color 0.3s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "white";
-                  e.currentTarget.style.color = "black";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "white";
-                }}
-              >
-                SOBRE OS DESIGNS
-              </button>
-            </div>
-            <ul
-              style={{
-                listStyle: "none",
-                padding: 0,
-                fontWeight: "600",
-                fontSize: "1rem",
-                lineHeight: 1.6,
-              }}
-            >
-              <li>100% Algodão</li>
-              <li>Gola Reforçada</li>
-              <li>Tamanhos M, G, GG</li>
-              <li>Preço Único R$ 100</li>
-            </ul>
-          </div>
+  {/* Conteúdo texto por cima da fumaça */}
+<div style={{ position: "relative", zIndex: 1, maxWidth: "420px" }}>
+  <h2
+    style={{ fontWeight: "900", fontSize: "2.2rem", marginBottom: "1rem" }}
+  >
+    STREETWEAR
+    <br />
+    AUTÊNTICO
+    <br />
+    E ÚNICO
+  </h2>
+  <p style={{ fontSize: "1rem", lineHeight: "1.5", marginBottom: "2rem" }}>
+    Camisas oversized com designs exclusivos criados por nossa equipe. Você
+    merece se destacar com estilo. Você não veste uma roupa, você veste uma
+    atitude.
+  </p>
+  <div style={{ display: "flex", gap: "2rem", marginBottom: "2rem" }}>
+    <button
+  style={{
+    backgroundColor: "transparent",
+    border: "1.8px solid white",
+    padding: "10px 20px",
+    color: "white",
+    fontWeight: "700",
+    cursor: "pointer",
+    borderRadius: "6px",
+    userSelect: "none",
+    transition: "background-color 0.3s ease",
+  }}
+  onClick={() => {
+    const el = document.getElementById("sobre");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        window.scrollBy({ top: 100, behavior: "smooth" });
+      }, 600);
+    } else {
+      window.scrollBy({ top: 880, behavior: "smooth" }); // rola 600px para baixo
+    }
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = "white";
+    e.currentTarget.style.color = "black";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = "transparent";
+    e.currentTarget.style.color = "white";
+  }}
+>
+  VER COLEÇÕES
+</button>
+
+<button
+  style={{
+    backgroundColor: "transparent",
+    border: "1.8px solid white",
+    padding: "10px 20px",
+    color: "white",
+    fontWeight: "700",
+    cursor: "pointer",
+    borderRadius: "6px",
+    userSelect: "none",
+    transition: "background-color 0.3s ease",
+  }}
+  onClick={() => {
+    const el = document.getElementById("sobre");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        window.scrollBy({ top: 100, behavior: "smooth" });
+      }, 600);
+    } else {
+      window.scrollBy({ top: 2000, behavior: "smooth" }); // rola 600px para baixo
+    }
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = "white";
+    e.currentTarget.style.color = "black";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = "transparent";
+    e.currentTarget.style.color = "white";
+  }}
+  
+>
+  SOBRE OS DESIGNS
+</button>
+
+  </div>
+  <ul
+    style={{
+      listStyle: "none",
+      padding: 0,
+      fontWeight: "600",
+      fontSize: "1rem",
+      lineHeight: 1.6,
+    }}
+  >
+  </ul>
+</div>
+
         </section>
         {/* Lado direito - fundo branco com foto da camisa */}
         <section
           style={{
-            flex: 1,
-            backgroundColor: "black",
+          flex: 1,
+            filter: "drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3))",
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: "cover",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -434,12 +589,13 @@ export default function App() {
         >
           <div
             style={{
+              
               border: "4px solid black",
               borderRadius: "40px",
               padding: "100px",
               maxWidth: "700px",
-              boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
-              backgroundImage: "linear-gradient(135deg, #202020ff, #e0e0e0)",
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 1)",
+              backgroundImage: "linear-gradient(435deg, #ffffffff, #000000ff)",
                 
             }}
           >
@@ -558,7 +714,31 @@ export default function App() {
   ))}
 </div>
 
-    
+    <div style={{
+  margin: "40px 0",
+  padding: 20,
+  borderTop: "1px solid #eee",
+  borderBottom: "1px solid #eee",
+  textAlign: "center",
+  color: "#444",
+  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+}}>
+  <h2 style={{ fontWeight: "600", fontSize: "1.8rem", marginBottom: 10 }}>
+    Sobre os Designs
+  </h2>
+  <p style={{textAlign: "left",fontSize: "1rem", maxWidth: 500, margin: "0 auto", lineHeight: 1.5 }}>
+    Um novo estilo de vida. Com atitude, qualidade e autenticidade para quem vive a cultura streetwear.
+    Todos os designs são criados do zero, garantindo exclusividade e originalidade em cada peça. 
+    Nossas camisetas oversized são feitas com materiais premium, proporcionando conforto e dando um novo estilo de vida.
+    Cada estampa é cuidadosamente desenvolvida por nossa equipe de designers, que se inspiram num novo visual, arte de rua 
+    e tendências globais para criar peças que realmente se destacam.
+    Vista atitude, vista Lotus Negra Street.
+  </p>
+    <p style={{ textAlign: "left",fontSize: "1rem", maxWidth: 500, margin: "0 auto", lineHeight: 1.5 }}>
+    © 2025 Lotus Negra Street. Todos os direitos reservados.
+  </p>
+</div>
+
 
             <div className="mt-10">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
