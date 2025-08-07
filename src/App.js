@@ -19,7 +19,7 @@ import {
 } from "react-icons/fa";
 import backgroundImage from "./assets/background.png";
 
-import Camisa1 from "./assets/Camisa1.png"
+import Camisa1 from "./assets/Imagem do  background.png"
 // Tenta carregar imagens dinamicamente
 const loadImage = (index) => {
   try {
@@ -52,7 +52,7 @@ export default function App() {
     const [user, setUser] = useState(null);
     const [isRegistering, setIsRegistering] = useState(false);
     const [showWhatsappModal, setShowWhatsappModal] = useState(false);
-    const [showCartBox, setShowCartBox] = useState(false); // <-- Adicionado para corrigir erro
+    // const [showCartBox, setShowCartBox] = useState(false); // <-- Removido pois não é utilizado
     const [showUserBox, setShowUserBox] = useState(false); // <-- Adicionado para evitar erro semelhante
 
     const whatsappNumber = "5574999751663";
@@ -67,13 +67,6 @@ export default function App() {
         });
         return () => unsubscribe();
     }, []);
-      // Função para rolar suave até a seção com id
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
     // Detecta se é mobile
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -268,34 +261,119 @@ export default function App() {
           Lotus Negra Street
         </div>
 
-        {/* Centro: Menu */}
-        <div style={{ display: "flex", gap: "24px", cursor: "pointer" }}>
-          {[
-            "Início",
-            "Coleções",
-            "Sobre",
-            "Contato",
-          ].map((item) => (
-            <button
-              key={item}
+{/* Centro: Menu */}
+<div style={{ display: "flex", gap: "24px", cursor: "pointer", position: "relative" }}>
+  {["Início", "Sobre", "Contato"].map((item) => {
+    if (item === "Contato") {
+      return (
+        <div key={item} style={{ position: "relative" }}>
+          <button
+            style={{
+              background: "none",
+              border: "none",
+              fontWeight: "600",
+              fontSize: "1rem",
+              cursor: "pointer",
+              color: "black",
+              padding: 0,
+              userSelect: "none",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#7e22ce")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "black")}
+            onClick={() => {
+              const box = document.getElementById("contato-box");
+              box.style.display = box.style.display === "flex" ? "none" : "flex";
+            }}
+          >
+            {item}
+          </button>
+
+          {/* Caixinha de contato */}
+          <div
+            id="contato-box"
+            style={{
+              display: "none",
+              flexDirection: "column",
+              gap: "10px",
+              position: "absolute",
+              top: "30px",
+              left: "0",
+              background: "white",
+              border: "1px solid #ddd",
+              padding: "10px",
+              borderRadius: "8px",
+              boxShadow: "0px 4px 8px rgba(0,0,0,0.1)",
+              zIndex: 999,
+              minWidth: "200px"
+            }}
+          >
+            <a
+              href="https://wa.me/5574999751663"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                background: "none",
-                border: "none",
-                fontWeight: "600",
-                fontSize: "1rem",
-                cursor: "pointer",
-                color: "black",
-                padding: 0,
-                userSelect: "none",
-                transition: "color 0.2s ease",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                textDecoration: "none",
+                color: "#25D366",
+                fontWeight: "600"
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#7e22ce")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "black")}
             >
-              {item}
-            </button>
-          ))}
+              <FaWhatsapp /> Whatsapp
+            </a>
+
+            <a
+              href="https://www.instagram.com/lotus_negra_street?text=Ol%C3%A1,%20gostaria%20de%20saber%20mais%20sobre%20a%20Lotus%20Negra%20Street."
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                textDecoration: "none",
+                color: "#C13584",
+                fontWeight: "600"
+              }}
+            >
+              <FaInstagram /> Lotus_Negra_Street
+            </a>
+          </div>
         </div>
+      );
+    }
+
+    return (
+      <button
+        key={item}
+        style={{
+          background: "none",
+          border: "none",
+          fontWeight: "600",
+          fontSize: "1rem",
+          cursor: "pointer",
+          color: "black",
+          padding: 0,
+          userSelect: "none",
+          transition: "color 0.2s ease",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "#7e22ce")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "black")}
+        onClick={() => {
+          if (item === "Início") {
+            window.scrollTo({ top: -20000, behavior: "smooth" });
+          } else if (item === "Sobre") {
+            window.scrollTo({ top: 20000, behavior: "smooth" });
+          }
+        }}
+      >
+        {item}
+      </button>
+    );
+  })}
+</div>
+
 
 {/* Direita: Ícones */}
 <div style={{ padding: "20px" }}>
@@ -314,7 +392,6 @@ export default function App() {
         title="Usuário"
         onClick={() => {
           setShowUserBox(!showUserBox);
-          setShowCartBox(false);
         }}
         style={{
           userSelect: "none",
@@ -322,129 +399,69 @@ export default function App() {
           color: "black",
         }}
       />
-{showUserBox && (
-  <div
-    style={{
-      position: "absolute",
-      top: "-20px",
-      right: "130%",
-      backgroundColor: "black",
-      color: "white",
-      border: "1px solid #ccc",
-      borderRadius: "18px",
-      padding: "12px",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-      width: "200px",
-      zIndex: 50,
-    }}
-  >
-    <div
-      style={{
-        textAlign: "right",
-        marginBottom: "-25px",
-      }}
-    >
-      <span
-        onClick={() => setShowUserBox(false)}
-        style={{
-          cursor: "pointer",
-          fontWeight: "bold",
-          color: "white",
-        }}
-      >
-        X
-      </span>
-    </div>
-    <p style={{ margin: 0 }}>E-mail: {user.email}</p>
 
-    {/* Botão sair dentro da caixinha, estilo simples */}
-<button
-  onClick={handleLogout}
-  style={{
-    marginTop: "12px",
-    width: "100%",
-    padding: "6px 12px",
-    borderRadius: "6px",
-    border: "2px solid black",
-    backgroundColor: "black",
-    color: "white",
-    fontWeight: "700",
-    fontSize: "0.85rem",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    gap: "6px",
-    
-  }}
-
->
-  <FaSignOutAlt /> Sair
-</button>
-
-  </div>
-)}
-
-    </div>
-
-    {/* Ícone de Carrinho */}
-    <FaShoppingCart
-      title="Carrinho"
-      onClick={() => {
-        setShowCartBox(!showCartBox);
-        setShowUserBox(false);
-      }}
-      style={{
-        userSelect: "none",
-        backgroundColor: "white",
-        color: "black",
-      }}
-    />
-
-    {showCartBox && (
-      <div
-        style={{
-          position: "absolute",
-          top: "40px",
-          left: "60px",
-          backgroundColor: "white",
-          border: "1px solid #ccc",
-          borderRadius: "8px",
-          padding: "12px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-          width: "250px",
-          zIndex: 10,
-        }}
-      >
+      {showUserBox && (
         <div
           style={{
-            textAlign: "right",
-            marginBottom: "8px",
+            position: "absolute",
+            top: "-20px",
+            right: "130%",
+            backgroundColor: "white",
+            color: "black",
+            border: "1px solid #000000ff",
+            borderRadius: "5px",
+            padding: "12px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+            width: "300px",
+            zIndex: 50,
           }}
         >
-          <span
-            onClick={() => setShowCartBox(false)}
+          <div
             style={{
-              cursor: "pointer",
-              fontWeight: "bold",
+              textAlign: "right",
+              marginBottom: "-25px",
             }}
           >
-            X
-          </span>
+            <span
+              onClick={() => setShowUserBox(false)}
+              style={{
+                cursor: "pointer",
+                fontWeight: "bold",
+                color: "black",
+              }}
+            >
+              X
+            </span>
+          </div>
+          <p style={{ margin: 0 }}>E-mail: {user.email}</p>
+
+          {/* Botão sair dentro da caixinha, estilo simples */}
+          <button
+            onClick={handleLogout}
+            style={{
+              marginTop: "12px",
+              width: "100%",
+              padding: "6px 12px",
+              borderRadius: "6px",
+              border: "2px solid black",
+              backgroundColor: "black",
+              color: "white",
+              fontWeight: "700",
+              fontSize: "0.85rem",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <FaSignOutAlt /> Sair
+          </button>
         </div>
-        <p style={{ marginBottom: "8px", fontWeight: "bold" }}>
-          Itens no Carrinho:
-        </p>
-        <ul style={{ paddingLeft: "16px", margin: 0 }}>
-          {cart.map((item, index) => (
-            <li key={index}>
-              {item.name} x {item.quantity}
-            </li>
-          ))}
-        </ul>
-      </div>
-    )}
+      )}
+    </div>
   </div>
 </div>
+
 
       </nav>
 
@@ -584,7 +601,7 @@ export default function App() {
                 window.scrollBy({ top: 100, behavior: "smooth" });
               }, 600);
             } else {
-              window.scrollBy({ top: 2000, behavior: "smooth" });
+              window.scrollBy({ top: 20000, behavior: "smooth" });
             }
           }}
           onMouseEnter={(e) => {
@@ -733,33 +750,6 @@ export default function App() {
     </div>
   ))}
 </div>
-
-    <div style={{
-  margin: "40px 0",
-  padding: 20,
-  borderTop: "1px solid #eee",
-  borderBottom: "1px solid #eee",
-  textAlign: "center",
-  color: "#444",
-  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-}}>
-  <h2 style={{ fontWeight: "600", fontSize: "1.8rem", marginBottom: 10 }}>
-    Sobre os Designs
-  </h2>
-  <p style={{textAlign: "left",fontSize: "1rem", maxWidth: 500, margin: "0 auto", lineHeight: 1.5 }}>
-    Um novo estilo de vida. Com atitude, qualidade e autenticidade para quem vive a cultura streetwear.
-    Todos os designs são criados do zero, garantindo exclusividade e originalidade em cada peça. 
-    Nossas camisetas oversized são feitas com materiais premium, proporcionando conforto e dando um novo estilo de vida.
-    Cada estampa é cuidadosamente desenvolvida por nossa equipe de designers, que se inspiram num novo visual, arte de rua 
-    e tendências globais para criar peças que realmente se destacam.
-    Vista atitude, vista Lotus Negra Street.
-  </p>
-    <p style={{ textAlign: "left",fontSize: "1rem", maxWidth: 500, margin: "0 auto", lineHeight: 1.5 }}>
-    © 2025 Lotus Negra Street. Todos os direitos reservados.
-  </p>
-</div>
-
-
             <div className="mt-10">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <FaShoppingCart /> Sacola
@@ -775,7 +765,7 @@ export default function App() {
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "space-between",
-                                    backgroundColor: "#f9fafb",
+                                    backgroundColor: "#000000ff",
                                     padding: "8px 12px",
                                     borderRadius: "8px",
                                 }}
@@ -804,6 +794,7 @@ export default function App() {
                                 />
                                 <span
                                     style={{
+                                      
                                         color: "#16a34a",
                                         fontWeight: "600",
                                         minWidth: "80px",
@@ -849,7 +840,7 @@ export default function App() {
         color: "black",
         padding: "10px 16px",
         fontWeight: "700",
-        borderRadius: "8px",
+        borderRadius: "18px",
         fontSize: "1rem",
         cursor: "pointer",
         border: "none",
@@ -877,7 +868,7 @@ export default function App() {
         color: "black",
         padding: "10px 16px",
         fontWeight: "700",
-        borderRadius: "8px",
+        borderRadius: "18px",
         fontSize: "1rem",
         cursor: "pointer",
         border: "none",
@@ -979,7 +970,30 @@ export default function App() {
     </div>
 )}
 
-
+    <div style={{
+  margin: "40px 0",
+  padding: 20,
+  borderTop: "1px solid #eee",
+  borderBottom: "1px solid #eee",
+  textAlign: "left",
+  color: "#444",
+  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+}}>
+  <h2 style={{ fontWeight: "600", fontSize: "1.8rem", marginBottom: 10 }}>
+    Sobre os Designs
+  </h2>
+  <p style={{textAlign: "left",fontSize: "1rem", maxWidth: 500, margin: "0 auto", lineHeight: 1.5 }}>
+    Um novo estilo de vida. Com atitude, qualidade e autenticidade para quem vive a cultura streetwear.
+    Todos os designs são criados do zero, garantindo exclusividade e originalidade em cada peça. 
+    Nossas camisetas oversized são feitas com materiais premium, proporcionando conforto e dando um novo estilo de vida.
+    Cada estampa é cuidadosamente desenvolvida por nossa equipe de designers, que se inspiram num novo visual, arte de rua 
+    e tendências globais para criar peças que realmente se destacam.
+    Vista atitude, vista Lotus Negra Street.
+  </p>
+    <p style={{ textAlign: "left",fontSize: "1rem", maxWidth: 500, margin: "0 auto", lineHeight: 1.5 }}>
+    © 2025 Lotus Negra Street. Todos os direitos reservados.
+  </p>
+</div>
             </div>
         </div>
         
