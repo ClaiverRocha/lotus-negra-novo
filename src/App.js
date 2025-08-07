@@ -74,6 +74,16 @@ export default function App() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+    // Detecta se é mobile
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
     const handleAuth = async () => {
         try {
@@ -439,180 +449,190 @@ export default function App() {
       </nav>
 
       {/* CONTEÚDO PRINCIPAL - Fundo dividido */}
-      <main style={{ flex: 1, display: "flex", minHeight: "calc(100vh - 56px)" }}>
-        {/* Lado esquerdo - fundo preto com textos e fumaça */}
-        <section
-          style={{
-            flex: 1,
-            backgroundColor: "black",
-            color: "white",
-            padding: "64px 48px",
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            overflow: "hidden",
-          }}
-        >
-          {/* Efeito fumaça em background */}
-          <div
-            style={{
-              position: "absolute",
-              top: "-20%",
-              left: "-20%",
-              width: "150%",
-              height: "150%",
-              background:
-                "url('https://i.ibb.co/jv7jMXv/smoke-effect.png') no-repeat center/cover",
-              opacity: 0.15,
-              filter: "blur(30px)",
-              zIndex: 0,
-              pointerEvents: "none",
-            }}
-          ></div>
-
-  {/* Conteúdo texto por cima da fumaça */}
-<div style={{ position: "relative", zIndex: 1, maxWidth: "420px" }}>
-  <h2
-    style={{ fontWeight: "900", fontSize: "2.2rem", marginBottom: "1rem" }}
-  >
-    STREETWEAR
-    <br />
-    AUTÊNTICO
-    <br />
-    E ÚNICO
-  </h2>
-  <p style={{ fontSize: "1rem", lineHeight: "1.5", marginBottom: "2rem" }}>
-    Camisas oversized com designs exclusivos criados por nossa equipe. Você
-    merece se destacar com estilo. Você não veste uma roupa, você veste uma
-    atitude.
-  </p>
-  <div style={{ display: "flex", gap: "2rem", marginBottom: "2rem" }}>
-    <button
+<main
   style={{
-    backgroundColor: "transparent",
-    border: "1.8px solid white",
-    padding: "10px 20px",
-    color: "white",
-    fontWeight: "700",
-    cursor: "pointer",
-    borderRadius: "6px",
-    userSelect: "none",
-    transition: "background-color 0.3s ease",
-  }}
-  onClick={() => {
-    const el = document.getElementById("sobre");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-      setTimeout(() => {
-        window.scrollBy({ top: 100, behavior: "smooth" });
-      }, 600);
-    } else {
-      window.scrollBy({ top: 880, behavior: "smooth" }); // rola 600px para baixo
-    }
-  }}
-  onMouseEnter={(e) => {
-    e.currentTarget.style.backgroundColor = "white";
-    e.currentTarget.style.color = "black";
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.backgroundColor = "transparent";
-    e.currentTarget.style.color = "white";
+    flex: 1,
+    display: "flex",
+    flexDirection: isMobile ? "column" : "row",
+    minHeight: "calc(100vh - 56px)",
   }}
 >
-  VER COLEÇÕES
-</button>
-
-<button
-  style={{
-    backgroundColor: "transparent",
-    border: "1.8px solid white",
-    padding: "10px 20px",
-    color: "white",
-    fontWeight: "700",
-    cursor: "pointer",
-    borderRadius: "6px",
-    userSelect: "none",
-    transition: "background-color 0.3s ease",
-  }}
-  onClick={() => {
-    const el = document.getElementById("sobre");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-      setTimeout(() => {
-        window.scrollBy({ top: 100, behavior: "smooth" });
-      }, 600);
-    } else {
-      window.scrollBy({ top: 2000, behavior: "smooth" }); // rola 600px para baixo
-    }
-  }}
-  onMouseEnter={(e) => {
-    e.currentTarget.style.backgroundColor = "white";
-    e.currentTarget.style.color = "black";
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.backgroundColor = "transparent";
-    e.currentTarget.style.color = "white";
-  }}
-  
->
-  SOBRE OS DESIGNS
-</button>
-
-  </div>
-  <ul
+  {/* Lado esquerdo - texto e fumaça */}
+  <section
     style={{
-      listStyle: "none",
-      padding: 0,
-      fontWeight: "600",
-      fontSize: "1rem",
-      lineHeight: 1.6,
+      flex: isMobile ? 1 : 0.5, // metade no desktop, cheio no mobile
+      backgroundColor: "black",
+      color: "white",
+      padding: isMobile ? "40px 24px" : "64px 48px",
+      position: "relative",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      overflow: "hidden",
+      maxWidth: "none", // remover limite para não estreitar
+      margin: "initial", // padrão
+      textAlign: isMobile ? "center" : "left",
     }}
   >
-  </ul>
-</div>
+    {/* Fumaça */}
+    <div
+      style={{
+        position: "absolute",
+        top: "-20%",
+        left: "-20%",
+        width: "150%",
+        height: "150%",
+        background:
+          "url('https://i.ibb.co/jv7jMXv/smoke-effect.png') no-repeat center/cover",
+        opacity: 0.15,
+        filter: "blur(30px)",
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    ></div>
 
-        </section>
-        {/* Lado direito - fundo branco com foto da camisa */}
-        <section
+    {/* Conteúdo texto */}
+    <div style={{ position: "relative", zIndex: 1 }}>
+      <h2
+        style={{
+          fontWeight: "900",
+          fontSize: isMobile ? "1.8rem" : "2.2rem",
+          marginBottom: "1rem",
+          lineHeight: 1.2,
+        }}
+      >
+        STREETWEAR
+        <br />
+        AUTÊNTICO
+        <br />
+        E ÚNICO
+      </h2>
+      <p
+        style={{
+          fontSize: isMobile ? "0.95rem" : "1rem",
+          lineHeight: "1.5",
+          marginBottom: "2rem",
+        }}
+      >
+        Camisas oversized com designs exclusivos criados por nossa equipe.
+        Você merece se destacar com estilo. Você não veste uma roupa, você
+        veste uma atitude.
+      </p>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          gap: "1.5rem",
+          marginBottom: "2rem",
+          justifyContent: isMobile ? "center" : "flex-start",
+        }}
+      >
+        <button
           style={{
-          flex: 1,
-            filter: "drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3))",
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: "cover",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "48px",
-            position: "relative",
+            backgroundColor: "transparent",
+            border: "1.8px solid white",
+            padding: "10px 20px",
+            color: "white",
+            fontWeight: "700",
+            cursor: "pointer",
+            borderRadius: "6px",
+            userSelect: "none",
+            transition: "background-color 0.3s ease",
+            width: isMobile ? "100%" : "auto",
+          }}
+          onClick={() => {
+            const el = document.getElementById("sobre");
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth" });
+              setTimeout(() => {
+                window.scrollBy({ top: 100, behavior: "smooth" });
+              }, 600);
+            } else {
+              window.scrollBy({ top: 880, behavior: "smooth" });
+            }
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "white";
+            e.currentTarget.style.color = "black";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+            e.currentTarget.style.color = "white";
           }}
         >
-          <div
-            style={{
-              
-              border: "4px solid black",
-              borderRadius: "40px",
-              padding: "100px",
-              maxWidth: "700px",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 1)",
-              backgroundImage: "linear-gradient(435deg, #ffffffff, #000000ff)",
-                
-            }}
-          >
-            <img
-              src={Camisa1}
-              alt="Camisa Oversized Lotus Negra"
-              style={{
-                
-                width: "100%",
-                height: "auto",
-                borderRadius: "8px",
-                display: "block",
-              }}
-            />
-          </div>
-        </section>
-      </main>
+          VER COLEÇÕES
+        </button>
+
+        <button
+          style={{
+            backgroundColor: "transparent",
+            border: "1.8px solid white",
+            padding: "10px 20px",
+            color: "white",
+            fontWeight: "700",
+            cursor: "pointer",
+            borderRadius: "6px",
+            userSelect: "none",
+            transition: "background-color 0.3s ease",
+            width: isMobile ? "100%" : "auto",
+          }}
+          onClick={() => {
+            const el = document.getElementById("sobre");
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth" });
+              setTimeout(() => {
+                window.scrollBy({ top: 100, behavior: "smooth" });
+              }, 600);
+            } else {
+              window.scrollBy({ top: 2000, behavior: "smooth" });
+            }
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "white";
+            e.currentTarget.style.color = "black";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+            e.currentTarget.style.color = "white";
+          }}
+        >
+          SOBRE OS DESIGNS
+        </button>
+      </div>
+    </div>
+  </section>
+
+  {/* Lado direito - imagem da camisa */}
+  <section
+    style={{
+      flex: isMobile ? 1 : 0.5,
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: isMobile ? "24px" : "48px",
+      position: "relative",
+      minHeight: isMobile ? "300px" : "auto",
+    }}
+  >
+    <div>
+      <img
+        src={Camisa1}
+        alt="Camisa Oversized Lotus Negra"
+        style={{
+          width: isMobile ? "80%" : "100%",
+          height: "auto",
+          borderRadius: "8px",
+          display: "block",
+          margin: "0 auto",
+        }}
+      />
+    </div>
+  </section>
+</main>
+
       <h2 className="text-2xl font-bold mb-8">Catálogo</h2>
 
 <div
