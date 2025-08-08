@@ -54,6 +54,7 @@ export default function App() {
     const [showWhatsappModal, setShowWhatsappModal] = useState(false);
     // const [showCartBox, setShowCartBox] = useState(false); // <-- Removido pois não é utilizado
     const [showUserBox, setShowUserBox] = useState(false); // <-- Adicionado para evitar erro semelhante
+const [showMsg, setShowMsg] = useState(false);
 
     const whatsappNumber = "5574999751663";
     const whatsappMessage = encodeURIComponent("Olá, gostaria de enviar meu orçamento");
@@ -111,6 +112,8 @@ export default function App() {
 
   const inputEl = quantityRefs.current[product.id];
   if (inputEl) inputEl.value = 1;
+    setShowMsg(true);
+  setTimeout(() => setShowMsg(false), 2500);
 };
 
 
@@ -298,14 +301,15 @@ export default function App() {
               gap: "10px",
               position: "absolute",
               top: "30px",
-              left: "0",
+              right: "0", // garante alinhamento à esquerda do botão
               background: "white",
               border: "1px solid #ddd",
               padding: "10px",
               borderRadius: "8px",
               boxShadow: "0px 4px 8px rgba(0,0,0,0.1)",
               zIndex: 999,
-              minWidth: "200px"
+              minWidth: "200px",
+              transform: "translateX(0%)" // move totalmente para a esquerda
             }}
           >
             <a
@@ -730,6 +734,7 @@ export default function App() {
               const inputEl = quantityRefs.current[product.id];
               const quantity = inputEl ? parseInt(inputEl.value) || 1 : 1;
               addToCart(product, quantity);
+              
             }}
             style={{
               width: "100%",
@@ -745,6 +750,30 @@ export default function App() {
           >
             Adicionar
           </button>
+          {showMsg && (
+  <div
+    style={{
+      position: "fixed",
+      bottom: 20,
+      right: 20,
+      backgroundColor: "#333",
+      color: "#fff",
+      padding: "12px 20px",
+      borderRadius: 8,
+      boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+      fontWeight: "600",
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      zIndex: 9999,
+    }}
+  >
+    <FaShoppingCart />
+    Item adicionado! Veja sua sacolinha abaixo.
+  </div>
+)}
+
+          
         </>
       )}
     </div>
