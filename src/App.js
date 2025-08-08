@@ -19,7 +19,14 @@ import {
 } from "react-icons/fa";
 import backgroundImage from "./assets/background.png";
 
-import Camisa1 from "./assets/Imagem do  background.png"
+import Carousel from "./components/Carousel";
+
+// Importa as imagens
+import Camisa2 from "./assets/Imagem do background.png";
+import Camisa3 from "./assets/Imagem do background2.png";
+import Camisa4 from "./assets/Imagem do background3.png";
+import Camisa5 from "./assets/Imagem do background4.png";
+  
 // Tenta carregar imagens dinamicamente
 const loadImage = (index) => {
   try {
@@ -46,6 +53,7 @@ const products = Array.from({ length: 8 }, (_, i) => {
 });
 
 export default function App() {
+    
     const [cart, setCart] = useState([]);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -642,21 +650,12 @@ const [showMsg, setShowMsg] = useState(false);
       minHeight: isMobile ? "300px" : "auto",
     }}
   >
-    {/* Quando for colocar alguma imagem acima do Background  */}
-    <div>
-      <img
-        src={Camisa1}
-        alt="Camisa Oversized Lotus Negra"
-        style={{
-          width: isMobile ? "80%" : "100%",
-          height: "auto",
-          borderRadius: "8px",
-          display: "block",
-          margin: "0 auto",
-        }}
-      />
-    </div>
- 
+
+  {/* Carrossel de imagens */}
+  <Carousel
+    imagens={[Camisa2, Camisa3, Camisa4, Camisa5]}
+    intervalo={3000}
+  />
   </section>
 </main>
 
@@ -778,7 +777,7 @@ const [showMsg, setShowMsg] = useState(false);
       }}
     >
       <FaShoppingCart />
-      Item adicionado! Veja sua sacolinha abaixo.
+      Item adicionado! Veja sua sacolinha abaixo. ↴
     </div>
 )}
         </>
