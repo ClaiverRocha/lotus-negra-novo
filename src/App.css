@@ -1,9 +1,12 @@
 .App {
   text-align: center;
+  padding: 1rem;
 }
 
 .App-logo {
-  height: 40vmin;
+  max-width: 200px;
+  width: 100%;
+  height: auto;
   pointer-events: none;
 }
 
@@ -22,10 +25,23 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  box-sizing: border-box;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 768px) {
+  .App-header {
+    font-size: calc(8px + 2vmin);
+    padding: 2rem 1rem;
+  }
+
+  .App-logo {
+    max-width: 150px;
+  }
 }
 
 @keyframes App-logo-spin {
