@@ -642,7 +642,7 @@ const [showMsg, setShowMsg] = useState(false);
       minHeight: isMobile ? "300px" : "auto",
     }}
   >
-    {/* Quando for colocar alguma imagem acima do Background 
+    {/* Quando for colocar alguma imagem acima do Background  */}
     <div>
       <img
         src={Camisa1}
@@ -656,7 +656,7 @@ const [showMsg, setShowMsg] = useState(false);
         }}
       />
     </div>
-  */}
+ 
   </section>
 </main>
 
@@ -1028,6 +1028,9 @@ const [showMsg, setShowMsg] = useState(false);
   </p>
     <p style={{ textAlign: "left",fontSize: "1rem", maxWidth: 500, margin: "0 auto", lineHeight: 1.5 }}>
     © 2025 Lotus Negra Street. Todos os direitos reservados.
+  </p>
+      <p style={{ textAlign: "left",fontSize: "1rem", maxWidth: 500, margin: "0 auto", lineHeight: 1.5 }}>
+    Developed by <a href="https://www.instagram.com/claiverrochaa" target="_blank" rel="noopener noreferrer" style={{ color: "#7e22ce", textDecoration: "underline" }}>Claiver Rocha</a>
   </p>
 </div>
             </div>
