@@ -52,10 +52,14 @@ export default function App() {
     const [user, setUser] = useState(null);
     const [isRegistering, setIsRegistering] = useState(false);
     const [showWhatsappModal, setShowWhatsappModal] = useState(false);
-    // const [showCartBox, setShowCartBox] = useState(false); // <-- Removido pois não é utilizado
     const [showUserBox, setShowUserBox] = useState(false); // <-- Adicionado para evitar erro semelhante
 const [showMsg, setShowMsg] = useState(false);
-
+  const handleClick = () => {
+    window.scrollBy({
+      top: 20000, // desce 20000px
+      behavior: "smooth", // scroll suave
+    });
+  } 
     const whatsappNumber = "5574999751663";
     const whatsappMessage = encodeURIComponent("Olá, gostaria de enviar meu orçamento");
 
@@ -638,6 +642,7 @@ const [showMsg, setShowMsg] = useState(false);
       minHeight: isMobile ? "300px" : "auto",
     }}
   >
+    {/* Quando for colocar alguma imagem acima do Background 
     <div>
       <img
         src={Camisa1}
@@ -651,6 +656,7 @@ const [showMsg, setShowMsg] = useState(false);
         }}
       />
     </div>
+  */}
   </section>
 </main>
 
@@ -751,29 +757,30 @@ const [showMsg, setShowMsg] = useState(false);
             Adicionar
           </button>
           {showMsg && (
-  <div
-    style={{
-      position: "fixed",
-      bottom: 20,
-      right: 20,
-      backgroundColor: "#333",
-      color: "#fff",
-      padding: "12px 20px",
-      borderRadius: 8,
-      boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-      fontWeight: "600",
-      display: "flex",
-      alignItems: "center",
-      gap: 8,
-      zIndex: 9999,
-    }}
-  >
-    <FaShoppingCart />
-    Item adicionado! Veja sua sacolinha abaixo.
-  </div>
+    <div
+      onClick={handleClick}
+      style={{
+        position: "fixed",
+        bottom: 20,
+        right: 20,
+        backgroundColor: "#333",
+        color: "#fff",
+        padding: "12px 20px",
+        borderRadius: 8,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+        fontWeight: "600",
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        cursor: "pointer", // deixa o cursor de botão
+        zIndex: 9999,
+        userSelect: "none", // evita seleção do texto no clique
+      }}
+    >
+      <FaShoppingCart />
+      Item adicionado! Veja sua sacolinha abaixo.
+    </div>
 )}
-
-          
         </>
       )}
     </div>
