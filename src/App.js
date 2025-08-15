@@ -68,7 +68,7 @@ const [showMsg, setShowMsg] = useState(false);
       behavior: "smooth", // scroll suave
     });
   } 
-    const whatsappNumber = "5574999751663";
+    const whatsappNumber = "557498013532";
     const whatsappMessage = encodeURIComponent("Olá, gostaria de enviar meu orçamento");
 
     // Ref para armazenar inputs de quantidade
@@ -184,7 +184,7 @@ const [showMsg, setShowMsg] = useState(false);
                             <FaInstagram size={28} />
                         </a>
                         <a
-                            href="https://wa.me/5574999751663"
+                            href="https://wa.me/557498013532"
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="WhatsApp"
@@ -325,7 +325,7 @@ const [showMsg, setShowMsg] = useState(false);
             }}
           >
             <a
-              href="https://wa.me/5574999751663"
+              href="https://wa.me/557498013532"
               target="_blank"
               rel="noopener noreferrer"
               style={{
