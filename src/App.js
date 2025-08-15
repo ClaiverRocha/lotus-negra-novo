@@ -26,6 +26,10 @@ import Camisa2 from "./assets/Imagem do background.png";
 import Camisa3 from "./assets/Imagem do background2.png";
 import Camisa4 from "./assets/Imagem do background3.png";
 import Camisa5 from "./assets/Imagem do background4.png";
+import Camisa6 from "./assets/Imagem do background5.png";
+import Camisa7 from "./assets/Imagem do background6.png";
+import Camisa8 from "./assets/Imagem do background7.png";
+import Camisa9 from "./assets/Imagem do background8.png";
   
 // Tenta carregar imagens dinamicamente
 const loadImage = (index) => {
@@ -653,7 +657,7 @@ const [showMsg, setShowMsg] = useState(false);
 
   {/* Carrossel de imagens */}
   <Carousel
-    imagens={[Camisa2, Camisa3, Camisa4, Camisa5]}
+    imagens={[Camisa2, Camisa3, Camisa4, Camisa5, Camisa6, Camisa7, Camisa8, Camisa9]}
     intervalo={3000}
   />
   </section>
@@ -855,7 +859,7 @@ const [showMsg, setShowMsg] = useState(false);
                         ))}
                     </ul>
                 )}
-
+    
 {cart.length > 0 && (
   <div
     style={{
@@ -922,7 +926,6 @@ const [showMsg, setShowMsg] = useState(false);
     </a>
   </div>
 )}
-
 {showWhatsappModal && (
     <div
         style={{
