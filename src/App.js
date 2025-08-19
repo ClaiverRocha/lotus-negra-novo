@@ -1,3 +1,4 @@
+import "./App.css";
 import React, { useState, useEffect, useRef } from "react";
 import jsPDF from "jspdf";
 import { auth } from "./firebase";
@@ -30,7 +31,8 @@ import Camisa6 from "./assets/Imagem do background5.png";
 import Camisa7 from "./assets/Imagem do background6.png";
 import Camisa8 from "./assets/Imagem do background7.png";
 import Camisa9 from "./assets/Imagem do background8.png";
-  
+  const images = [Camisa2, Camisa3, Camisa4, Camisa5, Camisa6, Camisa7, Camisa8, Camisa9];
+
 // Tenta carregar imagens dinamicamente
 const loadImage = (index) => {
   try {
@@ -58,6 +60,22 @@ const products = Array.from({ length: 8 }, (_, i) => {
 
 export default function App() {
     
+const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
+  const [fade, setFade] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(true);
+      setTimeout(() => {
+        setCurrentIndex(nextIndex);
+        setNextIndex((nextIndex + 1) % images.length);
+        setFade(false);
+      }, 1000); // duração do efeito
+    }, 4000); // tempo entre as trocas
+    return () => clearInterval(interval);
+  }, [nextIndex]);
+
     const [cart, setCart] = useState([]);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -656,10 +674,18 @@ const [showMsg, setShowMsg] = useState(false);
   >
 
   {/* Carrossel de imagens */}
-  <Carousel
-    imagens={[Camisa2, Camisa3, Camisa4, Camisa5, Camisa6, Camisa7, Camisa8, Camisa9]}
-    intervalo={3000}
-  />
+<div className="slider">
+      <img
+        src={images[currentIndex]}
+        className={`slide ${fade ? "zoom-out" : "zoom-in"}`}
+        alt="current"
+      />
+      <img
+        src={images[nextIndex]}
+        className={`slide next ${fade ? "zoom-in" : ""}`}
+        alt="next"
+      />
+    </div>
   </section>
 </main>
 

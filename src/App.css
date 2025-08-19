@@ -4,7 +4,7 @@
 }
 
 .App-header {
-  background-color: #282c3400;
+  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,30 +19,34 @@
   color: #61dafb;
 }
 
-.slider-container {
-  position: relative;
-  width: 100%; /* ocupar todo o lado direito */
-  max-width: 400px; /* ou ajuste conforme seu layout */
-  height: 500px; /* ajuste conforme suas imagens */
-  margin-left: auto; /* empurra para a direita */
-  margin-right: 2rem;
-  overflow: visible; /* para não cortar as mangas da camisa */
-  display: absiolute;
-  justify-content: center;
-  align-items: center;
+.slider {
+  width: 600px; /* ajuste conforme a imagem */
+  height: 500px;
+  overflow: hidden;
+  margin: 2rem auto;
 }
 
-.slider-image {
-  position: absolute;
-  width: auto;
-  height: 100%; /* altura máxima do container */
-  max-width: 100%;
-  object-fit: contain; /* mostra a camisa inteira sem cortar */
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out, transform 0.5s ease;
-}
-
-.slider-image.active {
+.slide {
+  position: center;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* muda de cover para contain */
+  transition: transform 1s ease, opacity 1s ease;
   opacity: 1;
-  transform: scale(20.05); /* leve zoom para efeito de destaque */
+  z-index: 1;
 }
+
+.slide.next {
+  opacity: 0;
+  z-index: 2;
+}
+
+.zoom-in {
+  transform: scale(1.05); /* menos zoom */
+}
+
+.zoom-out {
+  transform: scale(0.95);
+}
+
+
